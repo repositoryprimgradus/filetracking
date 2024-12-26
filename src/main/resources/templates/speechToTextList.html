@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	layout:decorator="layout">
+<head>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<head th:replace="Header :: head"></head>
+
+<title>Home</title>
+
+ 
+</head>
+<body th:replace="Header::navbar">  </body>
+ <main class="page-content">
+	<nav aria-label="breadcrumb" layout:fragment="heading">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item "><a href="welcome">Home</a></li>
+    <li class="breadcrumb-item navigate"><a href="#">Search File</a></li>
+  </ol>
+  
+  
+</nav>	
+
+	<div  th:if="${result}" class="alert alert-success" role="alert" align="center" onclick="myfunction">
+	<span th:text="${result}"></span>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12">
+		         <div class="input-group mb-4">
+						
+                       
+					</div>
+			<div class="card">
+				<div class="card-header"  >
+		<button class="btn btn-sm btn-primary"><a th:href="@{/speechToText}" style="color: white;">Click File</a></button>
+				</div>
+				<div class="card-body">
+							<div class="table-responsive-sm">
+						<table id="userData"
+							class="table table-bordered table-striped table-hover">
+							<thead style="background-color:#A0CFEC">
+								<tr>
+									<th>SL NO</th>
+									<th>Content</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+							<tr th:each="speechToText : ${speechToTextList}">
+							<td th:text="${speechToText.speechContentId}"></td>
+            <td  th:text="${speechToText.content}"></td>
+            <td ><a th:href="@{/word?id=}+${speechToText.speechContentId}"><i class="fa fa-download" aria-hidden="true" style="color: green;" </i></a></td>
+							</tr>
+							</tbody>
+						</table>
+
+					</div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </main>
+</body>
+
+
+
+
+
+
+
+</html>

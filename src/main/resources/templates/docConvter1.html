@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="fragments/layout">
+<head>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
+<title>Home</title>
+
+<style>
+
+.filelabel {
+    width: 200px;
+    border: 2px dashed grey;
+    border-radius: 5px;
+    display: block;
+    padding: 5px;
+    transition: border 300ms ease;
+    cursor: pointer;
+    text-align: center;
+    margin: 0;
+}
+.filelabel i {
+    display: block;
+    font-size: 30px;
+    padding-bottom: 5px;
+}
+.filelabel i,
+.filelabel .title {
+  color: grey;
+  transition: 200ms color;
+}
+.filelabel:hover {
+  border: 2px solid #1665c4;
+}
+.filelabel:hover i,
+.filelabel:hover .title {
+  color: #1665c4;
+}
+#FileInput{
+    display:none;
+}
+</style>
+
+</head>
+	<body>
+		
+	<nav aria-label="breadcrumb" layout:fragment="heading">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item "><a href="welcome">Home</a></li>
+    <li class="breadcrumb-item navigate"><a href="#">Search File</a></li>
+  </ol>
+  
+  
+</nav>	
+<div layout:fragment="content">
+
+	<button class="btn btn-primary" id="download1"  type="submit" style="margin-left: 60px;" onclick="myfunction()">Download</button>
+
+	</div>
+		
+<th:block layout:fragment="script">	
+	<script type="text/javascript">
+
+	function myfunction() {
+		console.log('hi');
+		$('#download1').hide();
+		}
+	
+	
+	
+
+</script>
+</th:block>
+</body>
+</html>

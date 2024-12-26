@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	layout:decorator="layout">
+<head>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<head th:replace="Header :: head"></head>
+<title>Home</title>
+
+<style>
+
+.filelabel {
+    width: 200px;
+    border: 2px dashed grey;
+    border-radius: 5px;
+    display: block;
+    padding: 5px;
+    transition: border 300ms ease;
+    cursor: pointer;
+    text-align: center;
+    margin: 0;
+}
+.filelabel i {
+    display: block;
+    font-size: 30px;
+    padding-bottom: 5px;
+}
+.filelabel i,
+.filelabel .title {
+  color: grey;
+  transition: 200ms color;
+}
+.filelabel:hover {
+  border: 2px solid #1665c4;
+}
+.filelabel:hover i,
+.filelabel:hover .title {
+  color: #1665c4;
+}
+#FileInput{
+    display:none;
+}
+
+
+.loader {
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	text-align: center;
+	z-index: 999;
+	overflow: auto;
+}
+
+</style>
+
+</head>
+<body th:replace="Header::navbar">  </body>
+ <main class="page-content">
+		
+	<nav aria-label="breadcrumb" layout:fragment="heading">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item "><a href="welcome">Home</a></li>
+    <li class="breadcrumb-item navigate"><a href="#">Convert File</a></li>
+  </ol>
+  
+  
+</nav>	
+
+	<div  th:if="${result}" class="alert alert-success" role="alert" align="center" onclick="myfunction">
+	<span th:text="${result}"></span>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+		         
+			<div class="card">
+			
+				<div class="card-body">
+					
+				<div class="loader">
+
+							<div
+								style="position: absolute; height: 100vh; display: flex; background: rgb(0, 0, 0); z-index: 99999; align-items: center; justify-content: center; width: 100%;height: 100%;">
+								<img class="loading-image" src="/assets/image/preview.gif" style="height: 50%;width: 30%;"
+									alt="loader" />
+						</div>
+
+						</div>			
+					
+				<form id="formFile" onsubmit="uploadFile(event)">
+				<div class="row">
+				
+				
+		<div class="col-md-2">		</div>
+   <div class="col-md-3">
+   <div class="form-group">
+    <label for="inputType">Upload File Type</label>
+    <select class="form-control" id="inputType" name="inputType">
+    <option disabled selected>Select</option>
+      <option value="PDF">PDF</option>
+      <option value="DOC">Word</option>
+      <option value="PSD">PSD</option>
+       <option value="PPT">PPT</option>
+      <option value="XLSX">XLSX</option>
+     <!--  <option>DXF</option>
+       <option>DWG</option>
+      <option>DGN</option>
+      <option>DWF</option>
+        <option>STL</option>
+      <option>IFC</option>
+      <option>PLT</option>
+       <option>IGS</option>
+      <option>DWT</option>
+      <option>DWFX</option>
+      <option>CF2</option> -->
+      
+    </select>
+  </div>
+   </div>
+   
+   <div class="col-md-2"> 
+   <img th:src="@{'/assets/image/loading2.gif'}" style="width: 100%;  margin-left: 15px;">
+    </div>
+   
+      <div class="col-md-3">
+   <div class="form-group">
+    <label for="outputType">Convert File Type</label>
+    <select class="form-control" id="outputType" name="outputType">
+          <option disabled selected>Select</option>
+    </select>
+  </div>
+   </div>
+ 
+   </div>
+				
+ <div class="row">
+ 
+  <div class="col-md-5"></div>
+   <div class="col-md-7">
+<label class="filelabel">
+    <i class="fa fa-paperclip">
+    </i>
+    <span class="title">
+        Upload File
+    </span>
+    <input class="FileUpload1" id="FileInput" name="fileAttach" type="file"/>
+</label>
+ 
+</div>
+</div>
+
+ <div class="row">
+ 
+  <div class="col-md-5"></div>
+   <div class="col-md-2">
+<button class="btn btn-primary" type="submit" style="margin-left: 60px;">Convert</button>
+ 
+</div>
+
+	</div>	
+</form>
+
+ <div class="row">
+ <form id="contact-form" role="form" th:action="@{/download-doc}"  method="POST">
+  <div class="col-md-5"></div>
+   <div class="col-md-2">
+    <input  id="fileName" name="fileName" type="hidden"/>
+<button class="btn btn-primary" id="download"  type="submit" style="margin-left: 60px;">Download</button>
+ 
+</div>
+</form>
+	</div>	
+
+
+
+	</div>
+	
+	
+
+	
+			
+		</div>
+	</div>
+	</div>
+	</main>
+	</div>
+	
+		
+<th:block layout:fragment="script">	
+	<script type="text/javascript">
+
+	$(document).ready(function() {
+	$("#download").hide();
+	
+	$("#FileInput").on('change',function (e) {
+        var labelVal = $(".title").text();
+        var oldfileName = $(this).val();
+            fileName = e.target.value.split( '\\' ).pop();
+
+            if (oldfileName == fileName) {return false;}
+            var extension = fileName.split('.').pop();
+
+        if ($.inArray(extension,['jpg','jpeg','png']) >= 0) {
+            $(".filelabel i").removeClass().addClass('fa fa-file-image-o');
+            $(".filelabel i, .filelabel .title").css({'color':'#208440'});
+            $(".filelabel").css({'border':' 2px solid #208440'});
+        }
+        else if(extension == 'pdf'){
+            $(".filelabel i").removeClass().addClass('fa fa-file-pdf-o');
+            $(".filelabel i, .filelabel .title").css({'color':'red'});
+            $(".filelabel").css({'border':' 2px solid red'});
+
+        }
+else if(extension == 'doc' || extension == 'docx'){
+        $(".filelabel i").removeClass().addClass('fa fa-file-word-o');
+        $(".filelabel i, .filelabel .title").css({'color':'#2388df'});
+        $(".filelabel").css({'border':' 2px solid #2388df'});
+    }
+        else{
+            $(".filelabel i").removeClass().addClass('fa fa-file-o');
+            $(".filelabel i, .filelabel .title").css({'color':'black'});
+            $(".filelabel").css({'border':' 2px solid black'});
+        }
+
+        if(fileName ){
+            if (fileName.length > 10){
+                $(".filelabel .title").text(fileName.slice(0,4)+'...'+extension);
+            }
+            else{
+                $(".filelabel .title").text(fileName);
+            }
+        }
+        else{
+            $(".filelabel .title").text(labelVal);
+        }
+    });
+	
+	
+
+	
+	$("#inputType").change(function(){
+	
+		 
+		$('#outputType').empty();
+		
+		var inputTypeValue =$("#inputType").val();
+	
+		if(inputTypeValue == "PDF"){
+			
+			$('#outputType').html('<option disabled selected>Select</option><option value="Word">Word</option><option value="Web">Web</option><option value="Spreadsheet" >Spreadsheet</option><option value="Photoshop">Photoshop</option><option value="Presentation">Presentation</option><option value="Image">Image</option><option disabled value="eBook">eBook</option>');
+			
+		}
+		
+     if(inputTypeValue == "DOC"){
+			
+    	 $('#outputType').html('<option disabled selected>Select</option><option value="PDF">PDF</option><option value="Web">Web</option><option value="Spreadsheet" >Spreadsheet</option><option value="Photoshop">Photoshop</option><option value="Presentation">Presentation</option><option value="Image">Image</option><option disabled value="eBook">eBook</option>');
+			
+    	 
+		}
+     
+     if(inputTypeValue == "PSD"){
+		
+    	 $('#outputType').html('<option disabled selected>Select</option><option value="Word">Word</option><option value="PDF">PDF</option><option value="Web">Web</option><option value="Spreadsheet" >Spreadsheet</option><option value="Presentation">Presentation</option><option value="Image">Image</option><option disabled value="eBook">eBook</option>');
+			 
+    	 
+		}
+     if(inputTypeValue == "PPT"){
+    	 
+    	 $('#outputType').html('<option disabled selected>Select</option><option value="Word">Word</option><option value="PDF">PDF</option><option value="Web">Web</option><option value="Spreadsheet" >Spreadsheet</option><option value="Photoshop">Photoshop</option><option value="Image">Image</option><option disabled value="eBook">eBook</option>');
+ 		
+			
+		}
+     if(inputTypeValue == "XLSX"){
+    	 $('#outputType').html('<option disabled selected>Select</option><option value="Word">Word</option><option value="PDF">PDF</option><option value="Web">Web</option><option value="Photoshop">Photoshop</option><option value="Presentation">Presentation</option><option value="Image">Image</option><option disabled value="eBook">eBook</option>');
+    		
+		}
+		
+    	
+		});
+	
+	});
+	function validatePDF(objFileControl){
+		
+	 	var file = objFileControl.value;
+	 	var len = file.length;
+	 	var ext = file.slice(len - 4, len);
+	 	
+	 	if(ext.toUpperCase() == ".PDF"){
+	  		 formOK = true;
+	  		 
+	 	}else{
+	 		
+	  		 formOK = false;
+	  		 alert("Only PDF files allowed.");
+	  	 	$("#selectedFile").val('');
+	 	}
+	}
+
+	
+	
+			function uploadFile(e){
+				
+				$('.loader').show();
+			
+				$("body").addClass("overlay");	
+			//var DemandNo=$("#DemandNo").val();
+		 e.preventDefault();
+		 var token = $("meta[name='_csrf']").attr("content");
+			var header1 = $("meta[name='_csrf_header']").attr("content");
+		
+			$("#download").hide();
+		//var token=$('#fileToken').val();
+		var form = $('#formFile')[0];
+		console.log("form  "+form);
+	    var data = new FormData(form);
+		
+	$.ajax({
+
+		type : "POST",
+		enctype: 'multipart/form-data',
+		url : "file-upload-submit",
+		dataType : "json",
+		//contentType: 'application/json; charset=utf-8',
+		"headers": {
+			'X-CSRF-TOKEN': token   
+				},
+		data : data,
+		processData: false,
+		contentType: false,
+		cache: false,
+			timeout: 600000,
+		success : function(response) {
+			
+			//window.location.href = '${pageContext.request.contextPath}/download-doc?fileName='+ response;
+			
+		    /* 
+			if (response.msg == "Success") {
+				
+			
+					} */
+		}, complete: function(data){
+		
+			$('.loader').hide();
+			$("body").removeClass("overlay");
+			  $("#fileName").val(data.responseText);
+			  $("#download").show();
+			//const myArray = data.responseText.split(".");
+			//window.location.href = '/download-doc?fileName='+ myArray[0]+'&type='+ myArray[1];
+			//$('.loader').hide();
+			//$("body").removeClass("overlay");
+			$("#inputType").val('');
+			$("#outputType").val('');
+			$("#FileInput").val(null);
+			//$("#myModalSave").modal('show');
+			//allFileUploadDetails();
+			
+			
+	},
+		error : function(response) {
+			console.log(response);
+		}
+	}) 
+	}
+	
+
+	
+</script>
+</th:block>
+</body>
+</html>

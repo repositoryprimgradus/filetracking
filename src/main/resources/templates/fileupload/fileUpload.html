@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	layout:decorator="layout">
+<head>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<head th:replace="Header :: head"></head>
+
+<title>Home</title>
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.550/pdf.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.550/pdf.worker.min.js"></script>
+
+<style type="text/css">
+.loader {
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	text-align: center;
+	z-index: 999;
+	overflow: auto;
+}
+</style>
+</head>
+<body th:replace="Header::navbar">  </body>
+ <main class="page-content">
+	<nav aria-label="breadcrumb" layout:fragment="heading">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item "><a href="welcome">Home</a></li>
+			<li class="breadcrumb-item navigate"><a href="#">File Upload</a></li>
+		</ol>
+
+
+
+	</nav>
+
+
+
+		<div class="card">
+			<div class="card-header">
+				<div class="row">
+					<div class="col-sm-8"></div>
+					<div class="col-sm-4" style="float: right;">
+						<div class="input-group mb-4">
+							<input type="search" class="form-control form-control"
+								id="search" placeholder="Search File Number">
+							<div class="input-group-append">
+								<button class="btn btn-primary" onclick="getFileNumber()"
+									data-toggle="modal" data-target="#exampleModal"
+									style="margin-bottom: 0px; margin-right: 0px;">
+									<i class="fa fa-search"> </i>
+								</button>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+				<div class="row">
+					<div class="col-md-10">
+						<div class="font-design" id="totalCandidate"></div>
+					</div>
+					<div class="col-md-2">
+
+						<button id="demandList" onclick="demandList()"
+							class="btn btn-primary">View Demand</button>
+					</div>
+				</div>
+
+				
+					<table class="table table-bordered table-sm" >
+						<thead class="table-primary" style="background-color: #2A3F54;color: white;">
+							<tr>
+								<th>Select</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Description</th>
+								<th>Barcode</th>
+								<th>Upload</th>
+							</tr>
+						</thead>
+						<tbody id="search_body" style="color: #1d3b55">
+						</tbody>
+					</table>
+				
+
+	<!-- 			<h6 id="demandDetails" style="padding-top: 10px; color: #1d3b55;">Demand
+					Details</h6>
+				<div class="table-responsive-sm" id="demandData">
+					<table
+						class="table table-hover  table-striped table-condensed table-bordered">
+						<tbody>
+							<tr>
+								<td
+									style="text-align: left; width: 120px; background-color: #1d3b55; color: white;"><b>DEMAND
+										NO:</b></td>
+								<td
+									style="text-align: left; background-color: #6c757d12; color: #1d3b55; width: 150px;"
+									id="dNo"></td>
+								<td
+									style="text-align: left; width: 120px; background-color: #1d3b55; color: white;"><b>DEMAND
+										DATE:</b></td>
+								<td
+									style="text-align: left; background-color: #6c757d12; color: #1d3b55; width: 150px;"
+									id="dDate"></td>
+
+							</tr>
+							<tr>
+								<td
+									style="text-align: left; width: 120px; background-color: #1d3b55; color: white;"><b>PROJECT
+										CODE:</b></td>
+								<td
+									style="text-align: left; background-color: #6c757d12; color: #1d3b55; width: 150px;"
+									id="pCode"></td>
+								<td
+									style="text-align: left; width: 120px; background-color: #1d3b55; color: white;"><b>DEMAND
+										MODE:</b></td>
+								<td
+									style="text-align: left; background-color: #6c757d12; color: #1d3b55; width: 150px;"
+									id="dMode"></td>
+
+							</tr>
+
+							<tr>
+								<td
+									style="text-align: left; width: 120px; background-color: #1d3b55; color: white;"><b>ESTIMATE
+										COST:</b></td>
+								<td
+									style="text-align: left; background-color: #6c757d12; color: #1d3b55; width: 150px;"
+									id="esimateCost"></td>
+								<td
+									style="text-align: left; width: 120px; background-color: #1d3b55; color: white;"><b>ITEM
+										FOR:</b></td>
+								<td
+									style="text-align: left; background-color: #6c757d12; color: #1d3b55; width: 150px;"
+									id="itemFor"></td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+				</div> -->
+
+
+				<!-- <div class="col-sm-12">
+
+									<button class="btn btn-primary btn-sm" onclick="addFile()"
+										id="addFile">Add File</button>
+
+								</div> -->
+
+				<div class="row">
+					<div class="col-md-10">
+						<div class="font-design" id="totalCandidate"></div>
+					</div>
+					<div class="col-md-2">
+						<br>
+						<button id="addFile" onclick="addFile()" class="btn btn-primary"
+							>Add File</button>
+						<br>
+					</div>
+				</div>
+				<div class="row"></div>
+
+				<form id="formFile" onsubmit="uploadFile(event)">
+					<input type="hidden" id="fileBarcode" name="fileBarcode"> 
+					<input type="hidden" id="uploadFileDetailsId" name="uploadFileDetailsId"> 
+					
+				
+					<!-- <input type="hidden" id="filetype" name="filetype"> -->
+
+					<div class="row" id="createFile">
+					<div class="loader">
+
+							<div
+								style="position: absolute; height: 100vh; display: flex; background: rgb(0, 0, 0); z-index: 99999; align-items: center; justify-content: center; width: 100%;height: 100%;">
+								<img class="loading-image" src="/assets/image/preview.gif" style="height: 50%;width: 30%;"
+									alt="loader" />
+						</div>
+
+						</div>
+						
+						<input type="hidden" id="fileToken"  th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+						<!-- <input type="hidden" id="fileToken" name="${_csrf.parameterName}"
+							value="${_csrf.token}" /> -->
+
+						<div class="table-responsive-sm col-sm-12" id="fileUploadData">
+							<table
+								class="table table-hover  table-striped table-condensed table-bordered">
+								<tbody>
+									<tr>
+									
+								 	    <td><b>File Type:</b>
+                                        <select class="form-control" id="file_sub_type" name="file_sub_type">
+												<option>--Select--</option>
+										</select>
+										</td> 
+										<td><b>File Name: </b><input
+											class="form-control" type="text" name="fileName" id="fileName"
+											required="required" 
+											/></td>
+											
+											
+										<td >
+										<td><b>File: </b>
+										<input
+											class="form-control" type="file" name="filecode" id="filecode"
+											required="required" accept="pdf"
+											onchange="validatePDF(this);"
+											></td>
+
+										<td ><button
+												class=" form-control btn btn-primary" type="submit" style="margin-top: 25px;">Upload</button></td>
+
+									</tr>
+
+								</tbody>
+
+							</table>
+						</div>
+
+						<div class="col-sm-2">
+							<div class="form-group"></div>
+						</div>
+					</div>
+
+				</form>
+
+
+
+				<div class="table-responsive-sm" id="FileUploadList">
+					<input type="hidden" id="DemandNo" name="demandNo"> <input
+						type="hidden" id="DemandNo" name="fileCode"> <input
+						type="hidden" id="DemandNo" name="fileName">
+					<table class="table table-bordered table-sm">
+
+						<thead class="table-primary" style="background-color: #2A3F54;color: white;">
+							<tr>
+								<th>Demand No</th>
+								<th>File Type</th>
+								<th>File Name</th>
+								<th>Preview</th>
+								<th>Download</th>
+							</tr>
+						</thead>
+						<tbody id="allFileUploadList" style="color: #1d3b55">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="modal" id="myModalSave">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<!-- Modal body -->
+					<div class="modal-body">File Upload Successfully..</div>
+
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal" onclick="okModal();">Ok</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
+		
+	 <div class="modal" id="myModal"   role="dialog"  >
+    <div class="modal-dialog " >
+      <div class="modal-content">
+        <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button> 
+        </div>
+        <div class="modal-body">
+		<main role="main">
+  <div id="carousel" class="carousel" data-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active" id="pdf-canvas-carousel">
+        <canvas id="pdf-canvas" class="d-block w-100" data-file=""></canvas>
+        <div class="carousel-caption d-none d-md-block">
+          <span>Page: <span id="page-num"></span> / <span id="page-count"></span></span>
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
+      <i class="fa fa-chevron-left fa-2x" style="color: red"></i>
+    <span class="sr-only">Previous</span>
+  </a>
+    <a class="carousel-control-next" href="#" role="button" data-slide="next">
+      <i class="fa fa-chevron-right fa-2x" style="color: red"></i>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+</main>
+					
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>	
+		
+		
+	</main>	
+	</div>
+
+	</div>
+	</div>
+	<th:block layout:fragment="script">
+		<script>
+			$(document).ready(function() {
+				$('#dataTableScroll').dataTable({
+					"iDisplayLength" : 5,
+					"bPaginate" : false,
+					"bFilter" : false,
+					scrollResize : false,
+					scrollY : false,
+					scrollX : false,
+					scrollCollapse : false,
+					"bInfo" : false
+
+				});
+			});
+		</script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#fileUploadData").hide();
+				$("#seacrchTable").hide();
+				$("#addFile").hide();
+				$("#createFile").hide();
+				$("#demandDetails").hide();
+				$("#FileUploadList").hide();
+				$("#demandList").hide();
+			});
+
+			function getFileNumber() {
+				$("#demandList").hide();
+				$("#demandDetails").hide();
+				$("#seacrchTable").show();
+				$("#fileUploadData").hide();
+				$("#FileUploadList").hide();
+				
+				$("#addFile").hide();
+				$("#createFile").hide();
+				var fileInput = $("#search").val();
+				if (fileInput == '' || fileInput.length < 3) {
+					alert('Please Enter Demand Number');
+				} else {
+					$('#search_body').empty();
+
+					$
+							.ajax({
+
+								type : "GET",
+								url : "getSearchFileNumber",
+								data : {
+									fileInput : fileInput
+								},
+								datatype : 'json',
+								success : function(fileInfo) {
+
+									for (var i = 0; i < fileInfo.length; i++) {
+										let tableRow = "<tr>\n"
+												+ "                        <td align='center'> <input type='radio' name='demandRadio' id="
+												+ fileInfo[i].demandId
+												+ " onclick='allFileUploadDetails("
+												+ JSON.stringify(fileInfo[i].fileBarcode)
+												+ ")'/>"
+												+ "                        <td> "
+												+ fileInfo[i].fileName
+												+ "</td>\n"
+												+ "                        <td> "
+												+ fileInfo[i].fileType
+												+ "</td>\n"
+												+ "                        <td> "
+												+ fileInfo[i].description
+												+ "</td>\n"
+												+ "                        <td> "
+												+ fileInfo[i].fileBarcode
+												+ "</td>\n"
+												+ "                             </td>\n"
+												+ "                        <td><button class='btn btn-primary btn-sm' onclick='addFile("+JSON.stringify(fileInfo[i].fileBarcode)+','+fileInfo[i].fileDetailsId+")' id='addFile'>Add File</button> "
+											
+												+ "</td>\n"
+												+ "                    </tr>";
+
+										$('#search_body').append(tableRow);
+									}
+								}
+
+							});
+				}
+			}
+			var dmdNo = "";
+/* 			function fileNoSearch(fileDetailsId) {
+				$("#seacrchAllData").show();
+				$("#demandData").show();
+				$("#addFile").show();
+				$("#createFile").hide();
+				$("#demandDetails").show();
+				$("#demandList").show();
+				$("#seacrchTable").hide();
+				$.ajax({
+
+					type : "GET",
+					url : "demandData",
+					data : {
+						fileDetailsId : fileDetailsId
+					},
+					datatype : 'json',
+					success : function(demandId) {
+						$('#dNo').html(demandId.demandNo);
+						$('#dDate').html(demandId.demandDate);
+						$('#dDate').html(demandId.demandDate);
+						$('#pCode').html(demandId.projectCode);
+						$('#dMode').html(demandId.demandMode);
+						$('#esimateCost').html(demandId.estimatedCost);
+						$('#itemFor').html(demandId.itemFor);
+						$('#DemandNo').val(demandId.demandNo);
+						$('#file_type').val(demandId.file_type);
+						allFileUploadDetails();
+						console.log('dmdNo', dmdNo)
+					}
+
+				});
+			} */
+			function allFileUploadDetails(fileBarcode) {
+				$("#FileUploadList").show();
+		
+				$("#addFile").show();
+	
+				var demandId = $("#DemandNo").val();
+				var file_type = $("#file_type").val();
+				$("#allFileUploadList").empty();
+				$
+						.ajax({
+
+							type : "GET",
+							url : "uploadFileList",
+							data : {
+								fileBarcode : fileBarcode
+							},
+							datatype : 'json',
+							success : function(fileUploadList) {
+								console.log('fileUploadList', fileUploadList)
+								if (fileUploadList.length == 0) {
+									$("#FileUploadList").hide();
+								} else {
+
+									let tableRow = "";
+									for (var i = 0; i < fileUploadList.length; i++) {
+										var urlFileBarcode=fileUploadList[i].fileBarcode;
+										var urlFileName=fileUploadList[i].fileName;
+										var url=window.location.origin+'/download-attachment?fileBarcode='+urlFileBarcode+'&fileName='+urlFileName;
+									
+										tableRow = "<tr>\n"
+												+ "<td> "
+												+ fileUploadList[i].fileuploadId
+												+ "</td>\n"
+												+ " <td> "
+												+ fileUploadList[i].fileSubType
+												+ "</td>\n"
+												+ " <td> "
+												+ fileUploadList[i].fileName
+												+ "</td>\n"
+												
+												+ "<td><button type='submit' onclick='showPdf("+JSON.stringify(url)+")' class='btn btn-success btn-sm'  > <i class='fa fa-eye'></i>"
+												+ " </td>\n"
+												
+												+ "<td><a  href='download-attachment?fileBarcode="
+												+ fileUploadList[i].fileBarcode
+												+ "&fileName="
+												+ fileUploadList[i].fileName
+												+ "'><i class='fa fa-download'></i></a></td>"
+												+ " </td>\n" + " </tr>";
+										$('#allFileUploadList').append(
+												tableRow);
+									}
+								}
+							}
+
+						});
+			}
+			function addFile(fileBarcode,fileDetailsId) {
+		
+				
+				$("#fileBarcode").val(fileBarcode);
+				$("#uploadFileDetailsId").val(fileDetailsId);
+				$("#createFile").show();
+				
+				$("#fileUploadData").show();
+				
+				$("#file_sub_type")
+			    .find("option")
+			    .remove()
+			    .end()
+			    .append('<option value="">--Select--</option>')
+			    .val('whatever')
+			;
+				
+		 		$.ajax({
+
+					type : "GET",
+					url : "fileSubTypeList",
+					data : "",
+					datatype : 'json',
+					success : function(response) {
+						var len = response.length;
+						for (var i = 0; i < len; i++) {
+							var id = response[i]['fileSubTypeCode'];
+							var name = response[i]['fileSubTypeDesc'];
+							$("#file_sub_type").append(
+									"<option value='"+id+"'>" + name
+											+ "</option>");
+						}
+					}
+				}); 
+			}
+			var formOK = false;
+
+			function validatePDF(objFileControl) {
+
+				var file = objFileControl.value;
+				var len = file.length;
+				var ext = file.slice(len - 4, len);
+
+				if (ext.toUpperCase() == ".PDF") {
+					formOK = true;
+
+				} else {
+
+					formOK = false;
+					alert("Only PDF files allowed.");
+					$("#filecode").val(null);
+				}
+			}
+
+			function checkUploadFile(e) {
+				var fileBarcode = $("#fileBarcode").val();
+				var fileSubType = $("#file_sub_type").val();
+				
+				$.ajax({
+
+				type : "GET",
+				url : "getFileUploadCount",
+				data : {
+					fileBarcode : fileBarcode,
+					fileSubType : fileSubType
+
+				},
+				datatype : 'json',
+				success : function(data) {
+					alert(data);
+					if(data===0){
+						alert(data);
+						uploadFile(e);
+					}
+
+				}
+				
+					
+				
+			});
+			}
+			
+			
+			
+			function uploadFile(e) {
+				
+				var fileBarcode = $("#fileBarcode").val();
+				var fileDetailsId = $("#uploadFileDetailsId").val();
+				var fileSubType = $("#file_sub_type").val();
+				var filecode = $("#filecode").val();
+				
+			
+							
+							$('.loader').show();
+							$("body").addClass("overlay");
+							
+							e.preventDefault();
+							var token = $("meta[name='_csrf']").attr("content");
+							var header1 = $("meta[name='_csrf_header']").attr("content");
+
+							var token = $('#fileToken').val();
+							var form = $('#formFile')[0];
+							console.log("form  " + form);
+							var data = new FormData(form);
+
+							$.ajax({
+
+								type : "POST",
+								enctype : 'multipart/form-data',
+								url : "fileupload-submit",
+								dataType : "json",
+								//contentType: 'application/json; charset=utf-8',
+								"headers" : {
+									'X-CSRF-TOKEN' : token
+								},
+								data : data,
+								processData : false,
+								contentType : false,
+								cache : false,
+								timeout : 600000,
+								success : function(response) {
+									/* 
+									if (response.msg == "Success") {
+										
+									
+											} */
+								},
+								complete : function() {
+									$('.loader').hide();
+									$("body").removeClass("overlay");
+									$("#file_type").val('');
+									$("#filecode").val('');
+									$("#myModalSave").modal('show');
+									
+									allFileUploadDetails(fileBarcode);
+
+								},
+								error : function(response) {
+									console.log(response);
+								}
+							})
+					
+				
+				
+
+			}
+			function downladFile() {
+				var demandNo = $("#demandNo").val();
+
+				var fileName = $("#fileName").val();
+				var fileCode = $("#fileCode").val();
+				
+				$.ajax({
+
+					type : "GET",
+					url : "download-attachment",
+					data : {
+						demandNo : demandNo,
+						fileName : fileName,
+						fileCode : fileCode
+
+					},
+					datatype : 'json',
+					success : function(data) {
+					}
+
+				});
+			}
+
+			function demandList() {
+				$("#seacrchTable").show();
+			}
+			
+			
+			
+		    
+		    $(document).scannerDetection({
+		 	   
+		    	  //https://github.com/kabachello/jQuery-Scanner-Detection
+
+		    		timeBeforeScanTest: 200, // wait for the next character for upto 200ms
+		    		avgTimeByChar: 40, // it's not a barcode if a character takes longer than 100ms
+		    		preventDefault: false,
+
+		    		endChar: [13],
+		    			onComplete: function(barcode, qty){
+		    	   validScan = true;
+		    	   
+		    	   
+		    	    	$('#search').val (barcode);
+		    	    	
+		    	    	getFileNumber();
+		    	    	
+		    		
+		    	    } // main callback function	,
+
+		    		
+		    		
+		    	});
+		    
+		    
+			function showPdf(url) {
+				
+				//var uri=window.location.origin+url;
+			
+				console.log(url);
+				 $('#myModal').modal('show');
+			  let pdfDoc = null,
+			      pageNum = 1,
+			      pageRendering = false,
+			      pageNumPending = null;
+
+			  const scale = 5.0,
+			        canvas = document.getElementById('pdf-canvas'),
+			        pnum = document.getElementById('page-num')
+			        ctx = canvas.getContext('2d');
+		
+
+		
+			
+			
+
+			  /**
+			   * Get page info from document, resize canvas accordingly, and render page.
+			   * @param num Page number.
+			   */
+			  function renderPage(num) {
+			    pageRendering = true;
+			
+			    // Using promise to fetch the page
+			    pdfDoc.getPage(num).then(function(page) {
+			      const page_viewport = page.getViewport(scale);
+			      canvas.height = page_viewport.height;
+			      canvas.width = page_viewport.width;
+
+			      // Render PDF page into canvas context
+			      const renderContext = {
+			        canvasContext: ctx,
+			        viewport: page_viewport
+			      };
+			      const renderTask = page.render(renderContext);
+
+			      // Wait for rendering to finish
+			      renderTask.promise.then(function() {
+			        pageRendering = false;
+			        if (pageNumPending !== null) {
+			          // New page rendering is pending
+			          renderPage(pageNumPending);
+			          pageNumPending = null;
+			        }
+			      });
+			    });
+
+			    // Update page counters
+			    $(pnum).text(num);
+			  }
+
+			  /**
+			   * If another page rendering in progress, waits until the rendering is
+			   * finised. Otherwise, executes rendering immediately.
+			   */
+			  function queueRenderPage(num) {
+			    if (pageRendering) {
+			      pageNumPending = num;
+			    } else {
+			      renderPage(num);
+			    }
+			  }
+
+			  /**
+			   * Displays previous page.
+			   */
+			  $(".carousel-control-prev").click(function() {
+			    if (pageNum > 1) {
+			      pageNum--;
+			      queueRenderPage(pageNum);
+			    }
+			  });
+
+			  /**
+			   * Displays next page.
+			   */
+			  $(".carousel-control-next").click(function() {
+			    if (pageNum < pdfDoc.numPages) {
+			      pageNum++;
+			      queueRenderPage(pageNum);
+			    }
+			  });
+
+			  /**
+			   * Asynchronously downloads PDF.
+			   */
+			  (function() {
+			
+			   // const url1 = "http://localhost:8083/download-attachment?fileBarcode=2D0728220633&fileName=2D0728220633_CBE_LTC%20Application.pdf";
+			    pdfjsLib.getDocument(url).then(function(pdfDoc_) {
+			    	
+			    	pdfDoc = pdfDoc_;
+
+
+			      $("#page-count").text(pdfDoc.numPages);
+
+			      // Initial/first page rendering
+			      renderPage(pageNum);
+			    });
+			  })();
+			}	    
+		    
+		    
+		    
+		</script>
+	</th:block>
+</body>
+</html>

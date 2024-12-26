@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	layout:decorator="layout">
+<head>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<head th:replace="Header :: head"></head>
+
+<title>Home</title>
+
+</head>
+<body th:replace="Header::navbar">  </body>
+ <main class="page-content">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item "><a href="welcome">Home</a></li>
+    <li class="breadcrumb-item navigate"><a href="createFile" >Create File</a></li>
+  </ol>
+  
+  
+</nav>
+
+		 <div class="row ">
+			 <div class="col-md-1"></div>
+      <div class="col-md-9">
+        <div class="card mt-2  bg-light">
+            <div class="card-body bg-light">
+            <form id="contact-form" role="form" th:action="@{/saveFile}" th:object="${createFile}" method="POST">
+            <input type="hidden" th:field="*{loginId}" />
+  			  <div class="controls">
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="form_name">File Name *</label>
+                            <input id="form_name" th:field="*{fileName}" type="text" name="fileName" class="form-control form-control" placeholder="Please enter filename *" required="required" data-error="Filename is required.">
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="form_need">Please select file type *</label>
+                            <select id="form_need" th:field="*{fileType}" name="fileType" class="form-control selectpicker" required="required" data-error="Please specify filetype.">
+                                <option value="" selected disabled>--Select file type--</option>
+                                <option th:each="fileType : ${fileTypeList}"
+                                        th:value="${fileType.FileCode}"
+                                        th:text="${fileType.FileType}"></option>
+
+                            </select>
+                            
+                        </div>
+                    </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="form_email">Date *</label>
+                            <input id="form_email" th:field="*{date}" type="date" name="date" class="form-control form-control" placeholder="Please enter date *" required="required" data-error="Valid date is required.">
+                            
+                        </div>
+                </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="form_message">Description *</label>
+                            <textarea id="form_message" th:field="*{description}" name="description" class="form-control form-control" placeholder="Write file description here." rows="4" required="required" data-error="Please, provide us a description."></textarea
+                                >
+                            </div>
+
+                        </div>
+
+
+                    <div class="col-md-3">
+                        
+                        <input type="submit" class="btn btn-success btn-sm  pt-2 btn-block
+                            " value="Create File" >
+                    
+                </div>
+          
+                </div>
+
+
+        </div>
+         </form>
+
+            </div>
+
+
+    </div>
+        <!-- /.8 -->
+
+    </div>
+    <!-- /.row-->
+
+</div>
+		
+	</main>	
+</div>
+
+               
+
+    
+
+	
+</body>
+</html>

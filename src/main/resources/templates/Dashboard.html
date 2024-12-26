@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	layout:decorator="layout">
+<head>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<head th:replace="Header :: head"></head>
+<title>Home</title>
+
+<style>
+.img-responsive{
+height: 110px;
+}
+
+.row{
+left: 40px;
+
+}
+/* .btn{
+
+color:white;
+} */
+.col-md-3{
+padding-right: 200px;
+}
+
+
+.hovereffect {
+width:100%;
+height:100%;
+float:left;
+overflow:hidden;
+position:relative;
+text-align:center;
+cursor:default;
+}
+
+.hovereffect .overlay {
+width:2%;
+height:2%;
+position:absolute;
+overflow:hidden;
+top:0;
+left:0;
+opacity:0;
+background-color:rgba(0,0,0,0.5);
+-webkit-transition:all .4s ease-in-out;
+transition:all .4s ease-in-out
+}
+
+.hovereffect img {
+display:block;
+position:relative;
+-webkit-transition:all .4s linear;
+transition:all .4s linear;
+}
+
+.hovereffect h2 {
+text-transform:uppercase;
+color:#fff;
+text-align:center;
+position:relative;
+font-size:17px;
+background:rgba(0,0,0,0.6);
+-webkit-transform:translatey(-100px);
+-ms-transform:translatey(-100px);
+transform:translatey(-100px);
+-webkit-transition:all .2s ease-in-out;
+transition:all .2s ease-in-out;
+padding:10px;
+}
+
+.hovereffect a.info {
+text-decoration:none;
+display:inline-block;
+text-transform:uppercase;
+color:#fff;
+border:1px solid #fff;
+background-color:transparent;
+opacity:0;
+filter:alpha(opacity=0);
+-webkit-transition:all .2s ease-in-out;
+transition:all .2s ease-in-out;
+margin:50px 0 0;
+padding:7px 14px;
+}
+
+.hovereffect a.info:hover {
+box-shadow:0 0 5px #fff;
+}
+
+.hovereffect:hover img {
+-ms-transform:scale(1.2);
+-webkit-transform:scale(1.2);
+transform:scale(1.2);
+}
+
+.hovereffect:hover .overlay {
+opacity:1;
+filter:alpha(opacity=100);
+}
+
+.hovereffect:hover h2,.hovereffect:hover a.info {
+opacity:1;
+filter:alpha(opacity=100);
+-ms-transform:translatey(0);
+-webkit-transform:translatey(0);
+transform:translatey(0);
+}
+
+.hovereffect:hover a.info {
+-webkit-transition-delay:.2s;
+transition-delay:.2s;
+}
+
+
+</style>
+
+</head>
+<body th:replace="Header::navbar">  </body>
+ <main class="page-content">
+	<div  th:if="${result}" class="alert alert-success" role="alert" align="center" onclick="myfunction">
+	<span th:text="${result}"></span>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+		         
+			<div class="card">
+			
+				<div class="card-body">
+ <div class="row">
+	<div class="col-sm-1"></div>
+
+<!--<div class="col-md-2 hovereffect" >
+  <div class="panel panel-default" >
+  <div class="panel-body" >
+   <div class="thumbnail " style="margin-top: 10px;">
+  <a  href="UserCoursePage.htm" >
+
+  <img th:src="@{'/assets/image/tracking.png'}" class="img-responsive img-rounded" style="height:80px; "><br><br><br>
+  <a class="btn " href="UserCoursePage.htm" >COURSE APPLY</a> 
+ </a>
+ </div>
+  </div>
+  </div>
+  <div style=" margin-top:-55px; margin-left:0px;" align="left">
+ <h6 style=" font-size: small; font-weight: bold; color: #65A5BA  ;">TRACKING</h6>
+ </div>
+  </div>-->
+			
+	<div class="col-md-2 hovereffect" >
+  <div class="panel panel-default" >
+  <div class="panel-body" >
+   <div class="thumbnail " style="margin-top: 10px;">
+  <a  href="/docConvter" >
+
+  <img th:src="@{'/assets/image/exchange-file.png'}" class="img-responsive img-rounded" style="height:80px; "><br><br><br>
+<!--  <a class="btn " href="UserCoursePage.htm" >COURSE APPLY</a> -->
+ </a>
+ </div>
+  </div>
+  </div>
+  <div style=" margin-top:-80px; margin-left:0px;" align="left">
+ <h6 style=" font-size: small; font-weight: bold; color: #65A5BA  ;">FILE CONVETER</h6>
+ </div>
+  </div>
+  
+  
+ 	<div class="col-md-2 hovereffect" >
+  <div class="panel panel-default" >
+  <div class="panel-body" >
+   <div class="thumbnail " style="margin-top: 10px;">
+  <a  href="speechToTextList" >
+
+  <img th:src="@{'/assets/image/speech-logo.png'}" class="img-responsive img-rounded" style="height:80px; "><br><br><br>
+<!--  <a class="btn " href="UserCoursePage.htm" >COURSE APPLY</a> -->
+ </a>
+ </div>
+  </div>
+  </div>
+  <div style=" margin-top:-80px; margin-left:0px;" align="left">
+ <h6 style=" font-size: small; font-weight: bold; color: #65A5BA  ;">AI SPEECH TO TEXT</h6>
+ </div>
+  </div> 
+  
+<!--   	<div class="col-md-2 hovereffect" >
+  <div class="panel panel-default" >
+  <div class="panel-body" >
+   <div class="thumbnail " style="margin-top: 10px; margin-left: 50px;">
+  <a  href="/speechToText" >
+
+  <img th:src="@{'/assets/image/scanner.png'}" class="img-responsive img-rounded" style="height:80px; "><br><br><br>
+  <a class="btn " href="UserCoursePage.htm" >COURSE APPLY</a> 
+ </a>
+ </div>
+  </div>
+  </div>
+  <div style=" margin-top:-55px; margin-left:0px;" align="left">
+ <h6 style=" font-size: small; font-weight: bold; color: #65A5BA  ;">Optical Character Recognition</h6>
+ </div>
+  </div>-->
+  
+     	<div class="col-md-2 hovereffect" >
+  <div class="panel panel-default" >
+  <div class="panel-body" >
+   <div class="thumbnail " style="margin-top: 5px; margin-left: 20px;">
+  <a  href="/merger" >
+
+  <img th:src="@{'/assets/image/merger.png'}" class="img-responsive img-rounded" style="height:80px; "><br><br><br>
+<!--  <a class="btn " href="UserCoursePage.htm" >COURSE APPLY</a> -->
+ </a>
+ </div>
+  </div>
+  </div>
+  <div style=" margin-top:-80px; margin-left:15px;" align="left">
+ <h6 style=" font-size: small; font-weight: bold; color: #65A5BA  ;">Merge</h6>
+ </div>
+  </div>
+  		
+					
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	</div>
+	</main>
+	</div>
+
+</body>
+</html>

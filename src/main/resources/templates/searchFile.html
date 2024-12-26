@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	layout:decorator="layout">
+<head>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<head th:replace="Header :: head"></head>
+<title>Home</title>
+
+</head>
+<body th:replace="Header::navbar">  </body>
+ <main class="page-content">
+<nav aria-label="breadcrumb" layout:fragment="heading">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item "><a href="welcome">Home</a></li>
+    <li class="breadcrumb-item navigate"><a href="#">Search File</a></li>
+  </ol>
+  
+  
+</nav>
+
+	<div  th:if="${result}" class="alert alert-success" role="alert" align="center" onclick="myfunction">
+	<span th:text="${result}"></span>
+	</div>
+	<div class="row">
+	
+		<div class="col-sm-12">
+		
+		         <div class="input-group mb-4">
+						<input type="search" placeholder="Search file"
+							aria-describedby="button-addon5" class="form-control" style="margin-left: 740px;"
+							id="last-barcode" autofocus>
+
+						<div class="input-group-append">
+							<button style="margin-bottom: 0px;margin-right: 0px;" id="button-addon5" type="submit" class="btn btn-primary" onclick="fileNoSearchByClick()">
+								<i class="fa fa-search"> </i>
+							</button>
+						</div>
+                  
+					</div>
+					
+					
+			<div class="card" id="FileInfo">
+				<div class="card-header"  style="background-color:#488AC7; color:white; font-size: 20px; font-weight:bold;">FILE INFORMATION
+					<div class="input-group mb-2" id="suggesstion-box"></div>
+				</div>
+				<div class="card-body">
+
+					<div class="table-responsive-sm">
+						<table id="userData"
+							class="table table-bordered table-striped table-hover">
+							<thead style="background-color:#A0CFEC">
+								<tr>
+									<th>File Name</th>
+									<th>File Type</th>
+									
+									<th>Description</th>
+									
+								</tr>
+							</thead>
+						<tbody>
+						<tr>
+
+									<td id="fileName"></td>
+									<td id="fileType"></td>
+									
+									<td id="description"></td>
+
+</tr>
+</tbody>
+						</table>
+						
+						<!-- Trigger the modal with a button -->
+<button id="CheckIn" type="button" class="btn btn-info "   onclick="addStatus()" >CHECK IN</button>
+
+	<div class="table-responsive-sm" id="seacrchAllData" style="margin-top: 20px;">
+								
+									<table class="table table-bordered table-striped table-hover">
+
+										<thead style="background-color:#A0CFEC">
+											<tr>
+												
+												<th>File Id</th>
+												<th>File Status</th>
+												<th>Updated By</th>
+												<th>Date</th> 
+											</tr>
+										</thead>
+										<tbody id="search_alldemandData" style="color: #1d3b55">
+										</tbody>
+									</table>
+								</div>
+ 
+
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+
+	
+	
+	
+ <!-- Modal -->
+  <div class="modal" id="myModal"   role="dialog"  >
+    <div class="modal-dialog " >
+      <div class="modal-content">
+        <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button> 
+        </div>
+        <div class="modal-body">
+          
+        
+          <input type="hidden" name="fileDetailsId"  id="fileDetailsId"/>
+			
+					<div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="form_need">Please select file status *</label>
+                            <select id="Status" name="Status" class="form-control" required="required" >
+                                <option value="" selected disabled>--Select file status--</option>
+                                <option value="IN">CHECK IN</option>
+                                <option value="OUT">CHECK OUT</option>
+                                
+                            </select>
+                            
+                        </div>
+                    </div>
+						</div>
+						<div class="row">
+						<div class="col-md-12">
+						
+							<button type="submit" onclick="checkin()" class="btn btn-success btn-send  pt-2 btn-block"  >submit</button>
+						</div>
+						
+
+					</div>
+					
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </main>	
+</div>
+<th:block layout:fragment="script">	
+	<script type="text/javascript">
+	
+	  $(document).ready(function() {
+		  $("#seacrchAllData").hide();
+		  $("#FileInfo").hide();
+		  $("#CheckIn").hide();
+		  
+		 } );
+	
+	
+	function addStatus() {
+	    $('#myModal').modal('show');
+	}
+    
+	
+	function allFileUploadDetails(){
+		$("#seacrchAllData").show();
+		
+		$("#search_alldemandData").empty();
+		var demandId=$('#last-barcode').val();
+		
+		$
+		.ajax({
+
+			type : "GET",
+			url : "fetchFileStatus",
+			data : {
+				demandId : demandId
+			},
+			datatype : 'json',
+			success : function(demandId) {
+				console.log('demandId',demandId)
+				if(demandId.length==0){
+			$("#seacrchAllData").hide();
+				}else{
+					
+					let tableRow="";
+					 for (var i = 0; i < demandId.length; i++) {
+						 tableRow = "<tr>\n" +               
+						 "<td> " + demandId[i].fileDetailsId + "</td>\n" +
+			             " <td> " + demandId[i].fileStatus + "</td>\n" +
+			             " <td> " + demandId[i].createdBy + "</td>\n" +
+			             " <td> " + demandId[i].date + "</td>\n" +
+			          	
+			        	 " </td>\n" +
+			             " </tr>";
+						 $('#search_alldemandData').append(tableRow);
+							 } 
+				}
+			}
+			
+		});
+	}	
+	
+	
+	/*
+	var barcode = '';
+    var interval;
+     document.addEventListener('keydown', function(evt) {
+    	
+
+
+        if (interval)
+            clearInterval(interval);
+       
+        if (evt.code == 'Enter') {
+            if (barcode)
+            	
+                handleBarcode(barcode);
+            barcode = '';
+            return false;
+        }
+        if (evt.key != 'Shift')
+            barcode += evt.key;
+        interval = setInterval(() => barcode = '', 100);
+    });
+
+    function handleBarcode(scanned_barcode) {
+    	  
+    
+    	document.getElementById("last-barcode").innerHTML = scanned_barcode;
+	 //  $('#last-barcode').val(scanned_barcode);
+	
+	
+	
+	  
+    } */
+    
+    
+    $(document).scannerDetection({
+ 	   
+    	  //https://github.com/kabachello/jQuery-Scanner-Detection
+
+    		timeBeforeScanTest: 200, // wait for the next character for upto 200ms
+    		avgTimeByChar: 40, // it's not a barcode if a character takes longer than 100ms
+    		preventDefault: false,
+
+    		endChar: [13],
+    			onComplete: function(barcode, qty){
+    	   validScan = true;
+    	   
+    	   
+    	    	$('#last-barcode').val (barcode);
+    	    	
+    	    	fileNoSearch(barcode);
+    	    	
+    		
+    	    } // main callback function	,
+
+    		
+    		
+    	});
+    
+    
+    
+    function fileNoSearch(demandId){
+    	  $("#seacrchAllData").hide();
+		  $("#FileInfo").hide();
+		  $("#CheckIn").hide();
+    	  $
+    		.ajax({
+
+    			type : "GET",
+    			url : "fileData",
+    			data : {
+    				demandId : demandId
+    			},
+    			datatype : 'json',
+    			
+    			success : function(demandId) {
+    				if(demandId){
+             		   $('#fileName').html(demandId.fileName);
+    				  $('#fileType').html(demandId.fileType);
+    				  $('#description').html(demandId.description);
+    				  $("#fileDetailsId").val(demandId.fileDetailsId);
+    				  $("#CheckIn").show();
+    				  $("#FileInfo").show();
+    				  allFileUploadDetails();
+    				  console.log('dmdNo',demandId)
+    				}
+    			}
+    			
+    		});
+    }
+    
+    function fileNoSearchByClick(){
+    	var demandId=$("#last-barcode").val();
+    
+  	  $("#seacrchAllData").hide();
+		  $("#FileInfo").hide();
+		  $("#CheckIn").hide();
+  	  $
+  		.ajax({
+
+  			type : "GET",
+  			url : "fileData",
+  			data : {
+  				demandId : demandId
+  			},
+  			datatype : 'json',
+  			
+  			success : function(demandId) {
+  				if(demandId){
+           		   $('#fileName').html(demandId.fileName);
+  				  $('#fileType').html(demandId.fileType);
+  				  $('#description').html(demandId.description);
+  				  $("#fileDetailsId").val(demandId.fileDetailsId);
+  				  $("#CheckIn").show();
+  				  $("#FileInfo").show();
+  				allFileUploadDetails();
+  				  console.log('dmdNo',demandId)
+  				}
+  			}
+  			
+  		});
+  }
+    
+    
+	function checkin(){
+		var token = $("meta[name='_csrf']").attr("content");
+		var header1 = $("meta[name='_csrf_header']").attr("content");		
+			        data = {};
+			        data['fileDetailsId']= $("#fileDetailsId").val();
+			       // data['comment'] 									    = $("#Comment").val();
+			        data['status']= $("#Status").val();
+			        
+			        
+			        console.log(data);		   
+		
+					 $.ajax({
+						 	type		:	"POST",
+						 	url			:	"/saveFileStatus",
+							dataType	:	"json",
+						"headers": {
+			    		'X-CSRF-TOKEN': token   
+			   				},
+							contentType: 'application/json; charset=utf-8',
+							data : JSON.stringify(data),				    
+						    success: function(response) {
+						    	$('#myModal').modal('hide');
+						    	allFileUploadDetails();
+						    },
+						    error: function(data) {
+					       
+						    }
+						})
+			
+			
+		}  
+
+    
+	</script>
+</th:block>		
+</body>
+</html>

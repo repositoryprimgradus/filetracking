@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title data-layout-title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">Files!</title>
+
+    <!--JQUERY JS  -->
+
+</head>
+<head th:replace="Header :: head"></head>
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container" >
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+					<i class="fa fa-files-o fa-5x fa-solid" aria-hidden="true" style="color: white; margin-left: 20px;"></i>
+                 <!--   <a href="/welcome" class="site_title"><img th:src="@{'/assets/image/files.png'}" 
+    style="width: 100%;height: 100%;border-radius: 15px;"></a>-->
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!-- menu profile quick info 
+                <div data-th-replace="fragments/fragment-menu-profile-quick-info :: menu-profile-quick-info"></div>
+                 /menu profile quick info -->
+
+             
+
+                <!-- sidebar menu -->
+                <div data-th-replace="fragments/fragment-sidebar-menu :: sidebar-menu"></div>
+                <!-- /sidebar menu -->
+
+                <!-- /menu footer buttons -->
+                <!--<div data-th-replace="fragments/fragment-menu-footer-buttons :: menu-footer-buttons"></div>-->
+                <!-- /menu footer buttons -->
+
+            </div>
+        </div>
+      <div class="col-md-12" style="background-color: white;min-height: 660px;">
+        
+       <div data-th-replace="fragments/fragment-top-navigation :: top-navigation"></div>
+        
+
+      
+        <div layout:fragment="content" style="margin-left: 150px;">
+
+			
+		</div>
+       
+
+        
+        <div data-th-replace="fragments/fragment-footer-content :: footer-content"></div>
+       </div>  
+    </div>
+</div>
+
+
+
+</body>
+</html>

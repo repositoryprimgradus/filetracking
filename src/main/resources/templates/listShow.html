@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	layout:decorator="layout">
+<head>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<head th:replace="Header :: head"></head>
+
+<title>Home</title>
+
+</head>
+<body th:replace="Header::navbar">  </body>
+ <main class="page-content">
+<nav aria-label="breadcrumb" layout:fragment="heading">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item "><a href="welcome">Home</a></li>
+    <li class="breadcrumb-item navigate"><a href="#">File Information</a></li>
+    <li class="nav navbar-nav ml-auto"><a href="createFile" >Create File</a></li>
+  </ol>
+  
+  
+</nav>
+	
+	
+	<div  th:if="${result}" class="alert alert-success" role="alert" align="center" onclick="myfunction">
+	<span th:text="${result}"></span>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+		         <div class="input-group mb-4">
+						
+                       
+					</div>
+			<div class="card">
+				<div class="card-body">
+
+					<div class="table-responsive">
+						<table id="userData"
+							class="table table-bordered table-striped table-hover">
+							<thead style="background-color:#A0CFEC">
+								<tr>
+									<th>File Name</th>
+									<th>File Type</th>
+									<th>Date</th>
+									<th>Description</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+
+						</table>
+
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	</main>
+	</div>
+	
+<th:block layout:fragment="script">	
+	<script type="text/javascript">
+	function formUser(id){
+		$("#loginId").val(id);
+		
+	}
+	
+	$(function(){
+		var token = $("meta[name='_csrf']").attr("content");
+		
+		$('#userData').DataTable({
+
+				'processing' : true,
+				'serverSide' : true,
+				'searching' : false,
+				'ordering' : false,
+				'paging' : false, 
+				"ajax" : {
+					'url' : '/viewFileInTable',
+					"type": "POST",
+					"headers": {
+				    'X-CSRF-TOKEN': token   
+				   },
+					"dataType": "json",
+					"contentType": "application/json",
+					
+		              "data": function (d) {
+		              return JSON.stringify(d);
+					}
+				},
+				'dataSrc' : "",
+				'columns' : [  {
+					'data' : 'fileName'
+				}, {	
+					'data' : 'fileType'
+				}, {
+					'data' : 'date'
+				}, {
+					'data' : 'description'
+				},{
+					'data' : 'actionType'
+				}]
+			});
+		});
+	
+	</script>
+	</th:block>	
+	
+</body>
+</html>

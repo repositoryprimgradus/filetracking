@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="fragments/layout">
+<head>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+
+<title>Home</title>
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.550/pdf.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.550/pdf.worker.min.js"></script>
+
+<style type="text/css">
+.carousel-control-prev .carousel-control-prev-icon,
+.carousel-control-next .carousel-control-next-icon {
+    outline: black;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.carousel-control-prev .fa-chevron-left,
+.carousel-control-next .fa-chevron-right {
+    color: black;
+}
+
+.carousel-caption {
+  color: black;
+}
+</style>
+</head>
+	<body>
+<nav aria-label="breadcrumb" layout:fragment="heading">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item "><a href="welcome">Home</a></li>
+    <li class="breadcrumb-item navigate"><a href="#">Search File</a></li>
+  </ol>
+  
+  
+</nav>
+	<div layout:fragment="content">
+	<div  th:if="${result}" class="alert alert-success" role="alert" align="center" onclick="myfunction">
+	<span th:text="${result}"></span>
+	</div>
+		<div class="row">
+		<div class="col-sm-12">
+		         
+			<div class="card">
+			
+				<div class="card-body">
+				<form id="formFile" onsubmit="uploadFile(event)">
+				<div class="row">
+				
+				
+		<div class="col-md-2">		</div>
+   <div class="col-md-3">
+   <div class="form-group">
+    <label for="inputType">Upload File Type</label>
+    <select class="form-control" id="inputType" name="inputType">
+    <option disabled selected>Select</option>
+      <option value="PDF">PDF</option>
+      <option value="DOC">Word</option>
+      <option value="PSD">PSD</option>
+       <option value="PPT">PPT</option>
+      <option value="XLSX">XLSX</option>
+     <!--  <option>DXF</option>
+       <option>DWG</option>
+      <option>DGN</option>
+      <option>DWF</option>
+        <option>STL</option>
+      <option>IFC</option>
+      <option>PLT</option>
+       <option>IGS</option>
+      <option>DWT</option>
+      <option>DWFX</option>
+      <option>CF2</option> -->
+      
+    </select>
+  </div>
+   </div>
+   
+   <div class="col-md-2"> 
+   <img th:src="@{'/assets/image/loading2.gif'}" style="width: 100%;  margin-left: 15px;">
+    </div>
+   
+      <div class="col-md-3">
+   <div class="form-group">
+    <label for="outputType">Convert File Type</label>
+    <select class="form-control" id="outputType" name="outputType">
+          <option disabled selected>Select</option>
+    </select>
+  </div>
+   </div>
+ 
+   </div>
+				
+ <div class="row">
+ 
+  <div class="col-md-5"></div>
+   <div class="col-md-7">
+<label class="filelabel">
+    <i class="fa fa-paperclip">
+    </i>
+    <span class="title">
+        Upload File
+    </span>
+    <input class="FileUpload1" id="FileInput" name="fileAttach" type="file"/>
+</label>
+ 
+</div>
+</div>
+
+ <div class="row">
+ 
+  <div class="col-md-5"></div>
+   <div class="col-md-2">
+<button class="btn btn-primary" type="submit" style="margin-left: 60px;">Convert</button>
+ 
+</div>
+
+	</div>	
+</form>
+
+ <div class="row">
+ <form id="contact-form" role="form" th:action="@{/download-doc}"  method="POST">
+  <div class="col-md-5"></div>
+   <div class="col-md-2">
+    <input  id="fileName" name="fileName" type="hidden"/>
+<button class="btn btn-primary" id="download"  type="submit" style="margin-left: 60px;">Download</button>
+ 
+</div>
+</form>
+	</div>	
+
+
+
+	</div>
+	
+	
+
+	
+			
+		</div>
+	</div>
+	</div>
+	
+  <div class="modal" id="myModal"   role="dialog"  >
+    <div class="modal-dialog " >
+      <div class="modal-content">
+        <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button> 
+        </div>
+        <div class="modal-body">
+		<main role="main">
+  <div id="carousel" class="carousel" data-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <canvas id="pdf-canvas" class="d-block w-100" data-file=""></canvas>
+        <div class="carousel-caption d-none d-md-block">
+          <span>Page: <span id="page-num"></span> / <span id="page-count"></span></span>
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#" role="button" data-slide="prev">
+      <i class="fas fa-chevron-left fa-2x"></i>
+    <span class="sr-only">Previous</span>
+  </a>
+    <a class="carousel-control-next" href="#" role="button" data-slide="next">
+      <i class="fas fa-chevron-right fa-2x"></i>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+</main>
+					
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+	
+	
+	
+	
+</div>
+<th:block layout:fragment="script">	
+	<script type="text/javascript">
+		
+		$('#download').hide();
+		
+			
+		
+		
+		
+		
+	
+	function allFileUploadDetails() {
+		//$("#FileUploadList").show();
+
+
+		var searchType = $("#searchType").val();
+		var searchData = $("#searchData").val();
+		$("#allFileUploadList").empty();
+		$
+				.ajax({
+
+					type : "GET",
+					url : "fileSubTypeSearch.htm",
+					data : {
+						searchType : searchType,
+						searchData : searchData
+					},
+					datatype : 'json',
+					success : function(fileUploadList) {
+						console.log('fileUploadList', fileUploadList)
+						if (fileUploadList.length == 0) {
+							$("#allFileUploadList").hide();
+						} else {
+
+							let tableRow = "";
+							for (var i = 0; i < fileUploadList.length; i++) {
+								var urlFileBarcode=fileUploadList[i].fileBarcode;
+								var urlFileName=fileUploadList[i].fileName;
+								var url=window.location.origin+'/download-attachment?fileBarcode='+urlFileBarcode+'&fileName='+urlFileName;
+							
+								tableRow = "<tr>\n"
+										+ "<td> "
+										+ fileUploadList[i].fileBarcode
+										+ "</td>\n"
+										+ " <td> "
+										+ fileUploadList[i].fileSubType
+										+ "</td>\n"
+										+ " <td> "
+										+ fileUploadList[i].fileName
+										+ "</td>\n"
+										
+										+ "<td><button type='submit' onclick='showPdf("+JSON.stringify(url)+")' class='btn btn-success btn-sm'  > <i class='fa fa-eye'></i>"
+										+ " </td>\n"
+										
+										+ "<td><a  href='download-attachment?fileBarcode="
+										+ fileUploadList[i].fileBarcode
+										+ "&fileName="
+										+ fileUploadList[i].fileName
+										+ "'><i class='fa fa-download'></i></a></td>"
+										+ " </td>\n" + " </tr>";
+								$('#allFileUploadList').append(
+										tableRow);
+							}
+						}
+					}
+
+				});
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	function showPdf() {
+		 $('#myModal').modal('show');
+	  let pdfDoc = null,
+	      pageNum = 1,
+	      pageRendering = false,
+	      pageNumPending = null;
+
+	  const scale = 5.0,
+	        canvas = document.getElementById('pdf-canvas'),
+	        pnum = document.getElementById('page-num')
+	        ctx = canvas.getContext('2d');
+
+	  /**
+	   * Get page info from document, resize canvas accordingly, and render page.
+	   * @param num Page number.
+	   */
+	  function renderPage(num) {
+	    pageRendering = true;
+	    
+	    // Using promise to fetch the page
+	    pdfDoc.getPage(num).then(function(page) {
+	      const page_viewport = page.getViewport(scale);
+	      canvas.height = page_viewport.height;
+	      canvas.width = page_viewport.width;
+
+	      // Render PDF page into canvas context
+	      const renderContext = {
+	        canvasContext: ctx,
+	        viewport: page_viewport
+	      };
+	      const renderTask = page.render(renderContext);
+
+	      // Wait for rendering to finish
+	      renderTask.promise.then(function() {
+	        pageRendering = false;
+	        if (pageNumPending !== null) {
+	          // New page rendering is pending
+	          renderPage(pageNumPending);
+	          pageNumPending = null;
+	        }
+	      });
+	    });
+
+	    // Update page counters
+	    $(pnum).text(num);
+	  }
+
+	  /**
+	   * If another page rendering in progress, waits until the rendering is
+	   * finised. Otherwise, executes rendering immediately.
+	   */
+	  function queueRenderPage(num) {
+	    if (pageRendering) {
+	      pageNumPending = num;
+	    } else {
+	      renderPage(num);
+	    }
+	  }
+
+	  /**
+	   * Displays previous page.
+	   */
+	  $(".carousel-control-prev").click(function() {
+	    if (pageNum > 1) {
+	      pageNum--;
+	      queueRenderPage(pageNum);
+	    }
+	  });
+
+	  /**
+	   * Displays next page.
+	   */
+	  $(".carousel-control-next").click(function() {
+	    if (pageNum < pdfDoc.numPages) {
+	      pageNum++;
+	      queueRenderPage(pageNum);
+	    }
+	  });
+
+	  /**
+	   * Asynchronously downloads PDF.
+	   */
+	  (function() {
+	    const url = "http://localhost:8083/download-attachment?fileBarcode=2D0728220633&fileName=2D0728220633_CBE_LTC%20Application.pdf";
+	    pdfjsLib.getDocument(url).then(function(pdfDoc_) {
+	      pdfDoc = pdfDoc_;
+	      $("#page-count").text(pdfDoc.numPages);
+
+	      // Initial/first page rendering
+	      renderPage(pageNum);
+	    });
+	  })();
+	}
+
+	</script>
+</th:block>		
+</body>
+</html>

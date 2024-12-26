@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	layout:decorator="layout">
+<head>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<head th:replace="Header :: head"></head>
+<title>Home</title>
+
+<style>
+	
+	.card {
+    background-color: #fff;
+    border-radius: 10px;
+    border: none;
+    position: relative;
+    margin-bottom: 30px;
+    box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,0.1), 0 0.9375rem 1.40625rem rgba(90,97,105,0.1), 0 0.25rem 0.53125rem rgba(90,97,105,0.12), 0 0.125rem 0.1875rem rgba(90,97,105,0.1);
+}
+.l-bg-cherry {
+    background: linear-gradient(to right, #493240, #f09) !important;
+    color: #fff;
+}
+
+.l-bg-blue-dark {
+    background: linear-gradient(to right, #373b44, #4286f4) !important;
+    color: #fff;
+}
+
+.l-bg-green-dark {
+    background: linear-gradient(to right, #0a504a, #38ef7d) !important;
+    color: #fff;
+}
+
+.l-bg-orange-dark {
+    background: linear-gradient(to right, #a86008, #ffba56) !important;
+    color: #fff;
+}
+
+.card .card-statistic-3 .card-icon-large .fas, .card .card-statistic-3 .card-icon-large .far, .card .card-statistic-3 .card-icon-large .fab, .card .card-statistic-3 .card-icon-large .fal {
+    font-size: 110px;
+}
+
+.card .card-statistic-3 .card-icon {
+    text-align: center;
+    line-height: 50px;
+    margin-left: 15px;
+    color: #000;
+    position: absolute;
+    right: -5px;
+    top: 20px;
+    opacity: 0.1;
+}
+
+.l-bg-cyan {
+    background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+    color: #fff;
+}
+
+.l-bg-green {
+    background: linear-gradient(135deg, #23bdb8 0%, #43e794 100%) !important;
+    color: #fff;
+}
+
+.l-bg-orange {
+    background: linear-gradient(to right, #f9900e, #ffba56) !important;
+    color: #fff;
+}
+
+.l-bg-cyan {
+    background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+    color: #fff;
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	.holderCircle { width: 500px; height: 500px; border-radius: 100%; margin: 60px auto; position: relative; }
+
+
+.dotCircle { width: 100%; height: 100%; position: absolute; margin: auto; top: 0; left: 0; right: 0; bottom: 0; border-radius: 100%; z-index: 20; }
+.dotCircle  .itemDot { display: block; width: 80px; height: 80px; position: absolute; background: #ffffff; color: #7d4ac7; border-radius: 20px; text-align: center; line-height: 80px; font-size: 30px; z-index: 3; cursor: pointer; border: 2px solid #e6e6e6; }
+.dotCircle  .itemDot .forActive { width: 56px; height: 56px; position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none; }
+.dotCircle  .itemDot .forActive::after { content: ''; width: 5px; height: 5px; border: 3px solid #7d4ac7; bottom: -31px; left: -14px; filter: blur(1px); position: absolute; border-radius: 100%; }
+.dotCircle  .itemDot .forActive::before { content: ''; width: 6px; height: 6px; filter: blur(5px); top: -15px; position: absolute; transform: rotate(-45deg); border: 6px solid #a733bb; right: -39px; }
+.dotCircle  .itemDot.active .forActive { display: block; }
+.round { position: absolute; left: 40px; top: 45px; width: 410px; height: 410px; border: 2px dotted #a733bb; border-radius: 100%; -webkit-animation: rotation 100s infinite linear; }
+.dotCircle .itemDot:hover, .dotCircle .itemDot.active { color: #ffffff; transition: 0.5s;   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#7d4ac7+0,a733bb+100 */ background: #7d4ac7; /* Old browsers */ background: -moz-linear-gradient(left, #7d4ac7 0%, #a733bb 100%); /* FF3.6-15 */ background: -webkit-linear-gradient(left, #7d4ac7 0%, #a733bb 100%); /* Chrome10-25,Safari5.1-6 */ background: linear-gradient(to right, #7d4ac7 0%, #a733bb 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7d4ac7', endColorstr='#a733bb', GradientType=1); /* IE6-9 */ border: 2px solid #ffffff; -webkit-box-shadow: 0 30px 30px 0 rgba(0, 0, 0, .13); -moz-box-shadow: 0 30px 30px 0 rgba(0, 0, 0, .13); box-shadow: 0 30px 30px 0 rgba(0, 0, 0, .13); }
+.dotCircle .itemDot { font-size: 40px; }
+.contentCircle { width: 250px; border-radius: 100%; color: #222222; position: relative; top: 150px; left: 50%; transform: translate(-50%, -50%); }
+.contentCircle .CirItem { border-radius: 100%; color: #222222; position: absolute; text-align: center; bottom: 0; left: 0; opacity: 0; transform: scale(0); transition: 0.5s; font-size: 15px; width: 100%; height: 100%; top: 0; right: 0; margin: auto; line-height: 250px; }
+.CirItem.active { z-index: 1; opacity: 1; transform: scale(1); transition: 0.5s; }
+.contentCircle .CirItem i { font-size: 180px; position: absolute; top: 0; left: 50%; margin-left: -90px; color: #000000; opacity: 0.1; }
+@media only screen and (min-width:300px) and (max-width:599px) {
+	.holderCircle {/* width: 300px; height: 300px;*/ margin: 110px auto; }
+	.holderCircle::after { width: 100%; height: 100%; }
+	.dotCircle { width: 100%; height: 100%; top: 0; right: 0; bottom: 0; left: 0; margin: auto; }
+}
+@media only screen and (min-width:600px) and (max-width:767px) { }
+@media only screen and (min-width:768px) and (max-width:991px) { }
+@media only screen and (min-width:992px) and (max-width:1199px) { }
+@media only screen and (min-width:1200px) and (max-width:1499px) { }
+  .title-box .title { font-weight: 600; letter-spacing: 2px; position: relative; z-index: -1; }
+        .title-box span { text-shadow: 0 10px 10px rgba(0, 0, 0, .15); font-weight: 800; color: #640178; }
+        .title-box p {font-size: 17px; line-height: 2em; }
+	
+	
+	
+	
+	
+	
+	
+</style>
+</head>
+<body th:replace="Header::navbar">  </body>
+ <main class="page-content">
+<nav aria-label="breadcrumb" layout:fragment="heading">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item "><a href="welcome">Home</a></li>
+  </ol>
+  
+  
+</nav>
+<!--	<div layout:fragment="content">-->
+	<!--	<div class="row">
+			<div class="col-lg-6" style="height: 450px;">
+			<div id="container1"></div>
+		    </div>
+		    <div class="col-lg-6" style="height: 450px;">
+			<div id="container2"></div>
+		    </div>
+		</div>-->
+
+		<!-- <div class="row ">
+        <div class="col-xl-3 col-lg-3">
+            <div class="card l-bg-cherry">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">New Orders</h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h2 class="d-flex align-items-center mb-0">
+                                3,243
+                            </h2>
+                        </div>
+                        <div class="col-4 text-right">
+                            <span>12.5% <i class="fa fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+                    <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                        <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3">
+            <div class="card l-bg-blue-dark">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-users"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Customers</h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h2 class="d-flex align-items-center mb-0">
+                                15.07k
+                            </h2>
+                        </div>
+                        <div class="col-4 text-right">
+                            <span>9.23% <i class="fa fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+                    <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                        <div class="progress-bar l-bg-green" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3">
+            <div class="card l-bg-green-dark">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-ticket-alt"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Ticket Resolved</h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h2 class="d-flex align-items-center mb-0">
+                                578
+                            </h2>
+                        </div>
+                        <div class="col-4 text-right">
+                            <span>10% <i class="fa fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+                    <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                        <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3">
+            <div class="card l-bg-orange-dark">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Revenue Today</h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h2 class="d-flex align-items-center mb-0">
+                                $11.61k
+                            </h2>
+                        </div>
+                        <div class="col-4 text-right">
+                            <span>2.5% <i class="fa fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+                    <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                        <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+			 <div class="row " >
+				 <section class="iq-features" >
+            <div class="container" style="margin-left: 100px;margin-top: -20px;">
+               <div class="row align-items-center">
+                  <div class="col-lg-3 col-md-12"></div>
+                  <div class="col-lg-6 col-md-12">
+                     <div class="holderCircle">
+                        <div class="round"></div>
+                        <div class="dotCircle">
+                         <a href="listShow">
+                           <span class="itemDot active itemDot1" data-tab="1">
+                           <i class="fas fa-folder-plus"> </i>
+                           <span class="forActive"></span>
+                           </span>
+                           </a>
+                            <a href="fileUploadView">
+                           <span class="itemDot itemDot2" data-tab="2">
+                           <i class="fas fa-cloud-upload-alt"></i>
+                           <span class="forActive"></span>
+                           </span>
+                           </a>
+                           <a href="speechToTextList">
+                           <span class="itemDot itemDot3" data-tab="3">
+                           <i class="fas fa-microphone-alt"></i>
+                           <span class="forActive"></span>
+                           </span>
+                           </a>
+                            <a href="docConvter">
+                           <span class="itemDot itemDot4" data-tab="4">
+                           <i class="fa fa-tags"></i>
+                           <span class="forActive"></span>
+                           </span>
+                           </a>
+                           <a href="fileTypeSearch.htm">
+                           <span class="itemDot itemDot5" data-tab="5">
+                           <i class="fab fa-searchengin"></i>
+                           <span class="forActive"></span>
+                           </span>
+                           </a>
+                           <a href="merger">
+                           <span class="itemDot itemDot6" data-tab="6">
+                           <i class="far fa-object-group"></i>
+                           <span class="forActive"></span>
+                           </span>
+                           </a>
+                        </div>
+                        <div class="contentCircle">
+                           <div class="CirItem title-box active CirItem1">
+                              <h2 class="title"><span>File</span></h2>
+                              <p>Create New File</p>
+                              <i class="fas fa-folder-plus"></i>
+                           </div>
+                           <div class="CirItem title-box CirItem2">
+                              <h2 class="title"><span>Upload </span></h2>
+                              <p>Upload File</p>
+                              <i class="fas fa-cloud-upload-alt"></i>
+                           </div>
+                           <div class="CirItem title-box CirItem3">
+                              <h2 class="title"><span>Speech</span></h2>
+                              <p>Speech To Text</p>
+                             <i class="fas fa-microphone-alt"></i>
+                           </div>
+                           <div class="CirItem title-box CirItem4">
+                              <h2 class="title"><span>Converter</span></h2>
+                              <p>File Convter like PDF to word</p>
+                              <i class="fa fa-tags"></i>
+                           </div>
+                           <div class="CirItem title-box CirItem5">
+                              <h2 class="title"><span>Searching</span></h2>
+                              <p>Search file content</p>
+                              <i class="fab fa-searchengin"></i>
+                           </div>
+                           <div class="CirItem title-box CirItem6">
+                              <h2 class="title"><span>Merge</span></h2>
+                              <p>Merge Doucment</p>
+                              <i class="far fa-object-group"></i>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-lg-3 col-md-12"></div>
+               </div>
+            </div>
+        </section>
+	
+				 
+		
+				 
+				 </div>
+
+	</div>
+<th:block layout:fragment="script">	
+	 <script th:src="@{'/assets/js/anychart-core.min.js'}"></script>
+	  <script th:src="@{'/assets/js/anychart-treemap.min.js'}"></script>
+	   <script th:src="@{'/assets/js/anychart-cartesian.min.js'}"></script>
+<script>
+	
+	anychart.onDocumentReady(function () {
+
+    // create data
+    var data = [
+      {name:   "Director", children: [
+        {name: "Person 1",        value: 11443830},
+        {name: "Person 2",         value: 64938716},
+        {name: "Person 3",        value: 80636124},
+        {name: "Person 4",         value: 10892931},
+        {name: "Person 5",          value: 59797978},
+        {name: "Person 6",    value: 17032845},
+        {name: "Person 7",         value: 38563573},
+        {name: "Person 8",        value: 19237513}, 
+        {name: "Person 9",          value: 46070146},
+        {name: "Person 10", value: 65511098}  
+      ]} 
+    ];
+
+    // create a chart and set the data
+    var chart = anychart.treeMap(data, "as-tree");
+
+    // set the chart title
+    chart.title().useHtml(true);
+    chart.title("<span style='font-size:12; font-style:italic'>" +
+                "File Tracking</span>");
+
+    // set the container id
+    chart.container("container1");
+
+    // initiate drawing the chart
+    chart.draw();
+});
+
+anychart.onDocumentReady(function () {
+
+    // create a data set
+    var data = anychart.data.set([
+      ["Person 1", 10000, 12500],
+      ["Person 2", 12000, 15000],
+      ["Person 3", 13000, 16500],
+      ["Person 4", 10000, 13000],
+      ["Person 5", 9000, 11000],
+      ["Person 6", 10000, 12500],
+      ["Person 7", 12000, 15000],
+      ["Person 8", 13000, 16500],
+      ["Person 9", 10000, 13000],
+      ["Person 10", 9000, 11000]
+    ]);
+
+    // map the data
+    var seriesData_1 = data.mapAs({x: 0, value: 1});
+    var seriesData_2 = data.mapAs({x: 0, value: 2});
+
+    // create a chart
+    var chart = anychart.column();
+
+    // create the first series, set the data and name
+    var series1 = chart.column(seriesData_1);
+    series1.name("Units in 2022");
+
+    // configure the visual settings of the first series
+    series1.normal().fill("#00cc99", 0.3);
+    series1.hovered().fill("#00cc99", 0.1);
+    series1.selected().fill("#00cc99", 0.5);
+    series1.normal().stroke("#00cc99", 1, "10 5", "round");
+    series1.hovered().stroke("#00cc99", 2, "10 5", "round");
+    series1.selected().stroke("#00cc99", 4, "10 5", "round");
+
+    // create the second series, set the data and name
+    var series2 = chart.column(seriesData_2);
+    series2.name("Units in 2023");
+
+    // configure the visual settings of the second series
+    series2.normal().fill("#0066cc", 0.3);
+    series2.hovered().fill("#0066cc", 0.1);
+    series2.selected().fill("#0066cc", 0.5);
+    series2.normal().hatchFill("forward-diagonal", "#0066cc", 1, 15);
+    series2.hovered().hatchFill("forward-diagonal", "#0066cc", 1, 15);
+    series2.selected().hatchFill("forward-diagonal", "#0066cc", 1, 15);
+    series2.normal().stroke("#0066cc");
+    series2.hovered().stroke("#0066cc", 2);
+    series2.selected().stroke("#0066cc", 4);
+
+    // set the chart title
+    chart.title().useHtml(true);
+    chart.title("<span style='font-size:12; font-style:italic'>" +
+                "File Tracking</span>");
+
+    // set the titles of the axes
+    chart.xAxis().title("Director");
+    chart.yAxis().title("Files, Units");
+
+    // set the container id
+    chart.container("container2");
+
+    // initiate drawing the chart
+    chart.draw();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+	let i=2;
+
+	
+	$(document).ready(function(){
+		var radius = 200;
+		var fields = $('.itemDot');
+		var container = $('.dotCircle');
+		var width = container.width();
+ radius = width/2.5;
+ 
+		 var height = container.height();
+		var angle = 0, step = (2*Math.PI) / fields.length;
+		fields.each(function() {
+			var x = Math.round(width/2 + radius * Math.cos(angle) - $(this).width()/2);
+			var y = Math.round(height/2 + radius * Math.sin(angle) - $(this).height()/2);
+			if(window.console) {
+				console.log($(this).text(), x, y);
+			}
+			
+			$(this).css({
+				left: x + 'px',
+				top: y + 'px'
+			});
+			angle += step;
+		});
+		
+		
+		$('.itemDot').click(function(){
+			
+			var dataTab= $(this).data("tab");
+			$('.itemDot').removeClass('active');
+			$(this).addClass('active');
+			$('.CirItem').removeClass('active');
+			$( '.CirItem'+ dataTab).addClass('active');
+			i=dataTab;
+			
+			$('.dotCircle').css({
+				"transform":"rotate("+(360-(i-1)*36)+"deg)",
+				"transition":"2s"
+			});
+			$('.itemDot').css({
+				"transform":"rotate("+((i-1)*36)+"deg)",
+				"transition":"1s"
+			});
+			
+			
+		});
+		
+		setInterval(function(){
+			var dataTab= $('.itemDot.active').data("tab");
+			if(dataTab>6||i>6){
+			dataTab=1;
+			i=1;
+			}
+			$('.itemDot').removeClass('active');
+			$('[data-tab="'+i+'"]').addClass('active');
+			$('.CirItem').removeClass('active');
+			$( '.CirItem'+i).addClass('active');
+			i++;
+			
+			
+			$('.dotCircle').css({
+				"transform":"rotate("+(360-(i-2)*36)+"deg)",
+				"transition":"2s"
+			});
+			$('.itemDot').css({
+				"transform":"rotate("+((i-2)*36)+"deg)",
+				"transition":"1s"
+			});
+			
+			}, 5000);
+		
+	});
+
+
+
+
+
+
+
+
+
+
+
+</script>
+<style>
+	
+	#container1,  #container2{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+</style>
+</th:block>		
+	</main>
+</body>
+</html>

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	layout:decorator="layout">
+
+<head th:replace="Header :: head"></head>
+
+
+<head>
+<title>Log in</title>
+
+<style type="text/css">
+body {
+	color: #000;
+	overflow-x: hidden;
+	height: 100%;
+	background-color: #B0BEC5;
+	background-repeat: no-repeat;
+}
+
+.card0 {
+	box-shadow: 0px 4px 8px 0px #757575;
+	border-radius: 0px;
+}
+
+.card2 {
+	margin: 0px 40px;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    margin-top: -78px;
+    margin-left: -21px;
+}
+
+.image {
+	width: 360px;
+	height: 280px;
+}
+
+.border-line {
+	border-right: 1px solid #EEEEEE;
+}
+
+.facebook {
+	background-color: #3b5998;
+	color: #fff;
+	font-size: 18px;
+	padding-top: 5px;
+	border-radius: 50%;
+	width: 35px;
+	height: 35px;
+	cursor: pointer;
+}
+
+.twitter {
+	background-color: #1DA1F2;
+	color: #fff;
+	font-size: 18px;
+	padding-top: 5px;
+	border-radius: 50%;
+	width: 35px;
+	height: 35px;
+	cursor: pointer;
+}
+
+.linkedin {
+	background-color: #2867B2;
+	color: #fff;
+	font-size: 18px;
+	padding-top: 5px;
+	border-radius: 50%;
+	width: 35px;
+	height: 35px;
+	cursor: pointer;
+}
+
+.line {
+	height: 1px;
+	width: 45%;
+	background-color: #E0E0E0;
+	margin-top: 10px;
+}
+
+.or {
+	width: 10%;
+	font-weight: bold;
+}
+
+.text-sm {
+	font-size: 14px !important;
+}
+
+::placeholder {
+	color: #BDBDBD;
+	opacity: 1;
+	font-weight: 300
+}
+
+:-ms-input-placeholder {
+	color: #BDBDBD;
+	font-weight: 300
+}
+
+::-ms-input-placeholder {
+	color: #BDBDBD;
+	font-weight: 300
+}
+
+input, textarea {
+	padding: 10px 12px 10px 12px;
+	border: 1px solid lightgrey;
+	border-radius: 2px;
+	margin-bottom: 5px;
+	margin-top: 2px;
+	width: 100%;
+	box-sizing: border-box;
+	color: #2C3E50;
+	font-size: 14px;
+	letter-spacing: 1px;
+}
+
+input:focus, textarea:focus {
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	border: 1px solid #304FFE;
+	outline-width: 0;
+}
+
+button:focus {
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	outline-width: 0;
+}
+
+a {
+	color: inherit;
+	cursor: pointer;
+}
+
+.btn-blue {
+	background-color: #1A237E;
+	width: 150px;
+	color: #fff;
+	border-radius: 2px;
+}
+
+.btn-blue:hover {
+	background-color: #000;
+	cursor: pointer;
+}
+
+.bg-blue {
+	color: #fff;
+	background-color: #1A237E;
+}
+
+@media screen and (max-width: 991px) {
+	.logo {
+		margin-left: 0px;
+	}
+	.image {
+		width: 300px;
+		height: 220px;
+	}
+	.border-line {
+		border-right: none;
+	}
+	.card2 {
+		border-top: 1px solid #EEEEEE !important;
+		margin: 0px 15px;
+	}
+}
+
+/*FOOTER*/
+
+footer {
+  background: #16222A;
+  background: -webkit-linear-gradient(59deg, #3A6073, #16222A);
+  background: linear-gradient(59deg, #3A6073, #16222A);
+  color: white;
+  margin-top:100px;
+}
+
+footer a {
+  color: #fff;
+  font-size: 14px;
+  transition-duration: 0.2s;
+}
+
+footer a:hover {
+  color: #FA944B;
+  text-decoration: none;
+}
+
+.copy {
+  font-size: 12px;
+  padding: 10px;
+  border-top: 1px solid #FFFFFF;
+}
+
+.footer-middle {
+  padding-top: 2em;
+  color: white;
+}
+
+
+/*SOCİAL İCONS*/
+
+/* footer social icons */
+
+ul.social-network {
+  list-style: none;
+  display: inline;
+  margin-left: 0 !important;
+  padding: 0;
+}
+
+ul.social-network li {
+  display: inline;
+  margin: 0 5px;
+}
+
+
+/* footer social icons */
+
+.social-network a.icoFacebook:hover {
+  background-color: #3B5998;
+}
+
+.social-network a.icoLinkedin:hover {
+  background-color: #007bb7;
+}
+
+.social-network a.icoFacebook:hover i,
+.social-network a.icoLinkedin:hover i {
+  color: #fff;
+}
+
+.social-network a.socialIcon:hover,
+.socialHoverClass {
+  color: #44BCDD;
+}
+
+.social-circle li a {
+  display: inline-block;
+  position: relative;
+  margin: 0 auto 0 auto;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+}
+
+.social-circle li i {
+  margin: 0;
+  line-height: 30px;
+  text-align: center;
+}
+
+.social-circle li a:hover i,
+.triggeredHover {
+  -moz-transform: rotate(360deg);
+  -webkit-transform: rotate(360deg);
+  -ms--transform: rotate(360deg);
+  transform: rotate(360deg);
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.social-circle i {
+  color: #595959;
+  -webkit-transition: all 0.8s;
+  -moz-transition: all 0.8s;
+  -o-transition: all 0.8s;
+  -ms-transition: all 0.8s;
+  transition: all 0.8s;
+}
+
+.social-network a {
+  background-color: #F9F9F9;
+}
+
+
+#myCarousel .carousel-item .mask{position: absolute;top: 0;left:0;height:100%;width: 100%;background-attachment: fixed}#myCarousel h4{font-size:50px;margin-bottom:15px;color:#FFF;line-height:100%;letter-spacing:0.5px;font-weight:600}#myCarousel p{font-size:18px;margin-bottom:15px;color:#d5d5d5}#myCarousel .carousel-item a{background:#FF0000;font-size:14px;color:#FFF;padding:13px 32px;display:inline-block}#myCarousel .carousel-item a:hover{background:#FF0000;text-decoration:none}#myCarousel .carousel-item h4{-webkit-animation-name:fadeInLeft;animation-name:fadeInLeft}#myCarousel .carousel-item p{-webkit-animation-name:slideInRight;animation-name:slideInRight}#myCarousel .carousel-item a{-webkit-animation-name:fadeInUp;animation-name:fadeInUp}#myCarousel .carousel-item .mask img{-webkit-animation-name:slideInRight;animation-name:slideInRight;display:block;height:auto;max-width:100%}#myCarousel h4, #myCarousel p, #myCarousel a, #myCarousel .carousel-item .mask img{-webkit-animation-duration: 1s;animation-duration: 1.2s;-webkit-animation-fill-mode: both;animation-fill-mode: both}#myCarousel .container{max-width: 1430px}#myCarousel .carousel-item{height:100%;min-height:550px}#myCarousel{position:relative;z-index:1;background:#000;background-size:cover}.carousel-control-next, .carousel-control-prev{height:40px;width:40px;padding:12px;top:50%;bottom:auto;transform:translateY(-50%);background-color: #FF0000}.carousel-item{position: relative;display: none;-webkit-box-align: center;-ms-flex-align: center;align-items: center;width: 100%;transition: -webkit-transform .6s ease;transition: transform .6s ease;transition: transform .6s ease,-webkit-transform .6s ease;-webkit-backface-visibility: hidden;backface-visibility: hidden;-webkit-perspective: 1000px;perspective: 1000px}.carousel-fade .carousel-item{opacity: 0;-webkit-transition-duration: .6s;transition-duration: .6s;-webkit-transition-property: opacity;transition-property: opacity}.carousel-fade .carousel-item-next.carousel-item-left, .carousel-fade .carousel-item-prev.carousel-item-right, .carousel-fade .carousel-item.active{opacity: 1}.carousel-fade .carousel-item-left.active, .carousel-fade .carousel-item-right.active{opacity: 0}.carousel-fade .carousel-item-left.active, .carousel-fade .carousel-item-next, .carousel-fade .carousel-item-prev, .carousel-fade .carousel-item-prev.active, .carousel-fade .carousel-item.active{-webkit-transform: translateX(0);-ms-transform: translateX(0);transform: translateX(0)}@supports (transform-style:preserve-3d){.carousel-fade .carousel-item-left.active, .carousel-fade .carousel-item-next, .carousel-fade .carousel-item-prev, .carousel-fade .carousel-item-prev.active, .carousel-fade .carousel-item.active{-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0)}}.carousel-fade .carousel-item-left.active, .carousel-fade .carousel-item-next, .carousel-fade .carousel-item-prev, .carousel-fade .carousel-item-prev.active, .carousel-fade .carousel-item.active{-webkit-transform: translate3d(0,0,0);transform: translate3d(0,0,0)}@-webkit-keyframes fadeInLeft{from{opacity: 0;-webkit-transform: translate3d(-100%, 0, 0);transform: translate3d(-100%, 0, 0)}to{opacity: 1;-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0)}}@keyframes fadeInLeft{from{opacity: 0;-webkit-transform: translate3d(-100%, 0, 0);transform: translate3d(-100%, 0, 0)}to{opacity: 1;-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0)}}.fadeInLeft{-webkit-animation-name: fadeInLeft;animation-name: fadeInLeft}@-webkit-keyframes fadeInUp{from{opacity: 0;-webkit-transform: translate3d(0, 100%, 0);transform: translate3d(0, 100%, 0)}to{opacity: 1;-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0)}}@keyframes fadeInUp{from{opacity: 0;-webkit-transform: translate3d(0, 100%, 0);transform: translate3d(0, 100%, 0)}to{opacity: 1;-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0)}}.fadeInUp{-webkit-animation-name: fadeInUp;animation-name: fadeInUp}@-webkit-keyframes slideInRight{from{-webkit-transform: translate3d(100%, 0, 0);transform: translate3d(100%, 0, 0);visibility: visible}to{-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0)}}@keyframes slideInRight{from{-webkit-transform: translate3d(100%, 0, 0);transform: translate3d(100%, 0, 0);visibility: visible}to{-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0)}}.slideInRight{-webkit-animation-name: slideInRight;animation-name: slideInRight}
+
+</style>
+<style type="text/css">
+.navbar-nav { 
+    flex-direction: row;
+}
+hr { 
+  display: block;
+  margin-top: 0.0em;
+  margin-bottom: 0.0em;
+  margin-left: -20px;
+  margin-right: -20px;
+  border-style: inset;
+  border-width: 1px;
+  height:2px;
+  background-color: #337ab7;
+} 
+.btn-warning{
+        background-color:  #f0ad4e;
+        } 
+        .btn-danger{
+        background-color:  #d9534f;
+        } 
+         .btn-primary{
+         background-color: #337ab7;
+         } 
+         
+     .nav-test {
+     
+
+ 
+  background-size: 100%;
+}    
+         
+body {
+ background-image: url("view/images/images.png");
+}
+
+
+.btngroup {
+	box-shadow: 2px 3px 0px 0px #1564ad;
+	background:linear-gradient(to bottom, #2e466e 5%, #003366 100%);
+	border-radius:5px;
+	border:1px solid #337bc4;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-weight:400;
+	padding:6px 15px;
+	text-decoration:none;
+	
+}
+.btngroup:hover {
+	background:linear-gradient(to bottom, #415989 5%, #2e466e 100%);
+	background-color:#378de5;
+}
+.btngroup:active {
+	position:relative;
+	top:1px;
+}
+
+.otto {
+  color: #444;
+  text-shadow: 
+    1px 0px 1px #ccc, 0px 1px 1px #eee, 
+    2px 1px 1px #ccc, 1px 2px 1px #eee,
+    3px 2px 1px #ccc, 2px 3px 1px #eee;
+}
+
+
+
+.login-block {
+	background: #DE6262;
+	/* fallback for old browsers */
+	background: -webkit-linear-gradient(to bottom, #FFB88C, #DE6262);
+	/* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, #FFB88C, #DE6262);
+	/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	float: left;
+	width: 100%;
+	padding: 50px 0;
+}
+
+.banner-sec {
+	background: url(https://static.pexels.com/photos/33972/pexels-photo.jpg) no-repeat left bottom;
+	background-size: cover;
+	min-height: 500px;
+	border-radius: 0 10px 10px 0;
+	padding: 0;
+}
+
+.container {
+	background: #fff;
+	border-radius: 10px;
+	box-shadow: 15px 20px 0px rgba(0, 0, 0, 0.1);
+	max-width: 1100px !important;
+	margin-left: 150px !important;
+}
+
+.carousel-inner {
+	border-radius: 0 10px 10px 0;
+}
+
+.carousel-caption {
+	text-align: left;
+	left: 5%;
+}
+
+.login-sec {
+	padding: 50px 30px;
+	position: relative;
+}
+
+.login-sec .copy-text {
+	position: absolute;
+	width: 80%;
+	bottom: 20px;
+	font-size: 13px;
+	text-align: center;
+}
+
+.login-sec .copy-text i {
+	color: #FEB58A;
+}
+
+.login-sec .copy-text a {
+	color: #E36262;
+}
+
+.login-sec h2 {
+	margin-bottom: 30px;
+	font-weight: 800;
+	font-size: 30px;
+	color: #DE6262;
+}
+
+.login-sec h2:after {
+	content: " ";
+	width: 100px;
+	height: 5px;
+	background: #FEB58A;
+	display: block;
+	margin-top: 20px;
+	border-radius: 3px;
+	margin-left: auto;
+	margin-right: auto
+}
+
+.btn-login {
+	background: #DE6262;
+	color: #fff;
+	font-weight: 600;
+}
+
+.banner-text {
+	width: 70%;
+	position: absolute;
+	bottom: 40px;
+	padding-left: 20px;
+}
+
+.banner-text h2 {
+	color: #fff;
+	font-weight: 600;
+}
+
+.banner-text h2:after {
+	content: " ";
+	width: 100px;
+	height: 5px;
+	background: #FFF;
+	display: block;
+	margin-top: 20px;
+	border-radius: 3px;
+}
+
+.banner-text p {
+	color: #fff;
+}
+
+
+
+
+
+.marquee-content {
+  display: flex;
+  animation: scrolling 10s linear infinite;
+}
+
+.marquee-item {
+  flex: 0 0 16vw;
+  margin: 0 1vw;
+/*   flex: 0 0 20vw; */
+/*   margin: 0 2vw; */
+}
+
+.marquee-item img {
+  display: block;
+  width: 60%;
+/*   padding: 0 20px; */
+}
+
+@keyframes scrolling {
+  0% { transform: translateX(0); }
+  100% { transform: translatex(-144vw); }
+}
+
+
+
+
+</style>
+</head>
+<body>
+
+
+<section class="login-block">
+	<div class="container">
+			<div class="row">
+			<div class="col-md-4 login-sec">
+				<img class="logo" th:src="@{'/assets/image/elexyt.png'}" >
+		    <h2 class="text-center">Login Now</h2>
+				
+					<form method="POST" th:action="@{/login}" class="form-signin">
+						<div class="form-group ${error != null ? 'has-error' : ''}">
+							
+
+								 <div style="padding-top: 2px;">
+									<label >Username</label>
+									<input class="form-contol" type="text" name="username"
+										placeholder="Enter a valid username" required="required"
+										style="font-size: 13px;">
+								</div>
+								 <div style="padding-top: 10px;">
+                                       <label type=text>Password</label>
+									<input class="form-control" type="password" name="password"
+										placeholder="Enter password" required="required"
+										style="font-size: 13px;">
+		                         </div>
+
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+
+								<div align="right" style="padding-top: 20px;">
+			                    <button class="btn btn-sm btn-primary " type="submit">Log In</button>
+			                    </div>
+
+								<div th:if="${param.error}" class="alert alert-danger">
+									Invalid username and password.</div>
+								
+							
+						</div>
+					</form>
+				</div>
+				
+
+				
+
+				
+				
+				
+					<div class="col-md-8 banner-sec">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                 <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                  </ol>
+            <div class="carousel-inner" role="listbox">
+    <div class="carousel-item active">
+      <img class="d-block img-fluid" th:src="@{'/assets/image/FileTracking.jpg'}" alt="First slide">
+      <div class="carousel-caption d-none d-md-block">
+        <div class="banner-text">
+            <h2>File Automation</h2>
+            <p></p>
+        </div>	
+  </div>
+    </div>
+    <div class="carousel-item">
+      <img class="d-block img-fluid"th:src="@{'/assets/image/FileTracking1.jpg'}" alt="Second slide">
+      <div class="carousel-caption d-none d-md-block">
+        <div class="banner-text">
+            <h2>File Tracking</h2>
+            <p></p>
+        </div>	
+    </div>
+    </div>
+    <div class="carousel-item">
+      <img class="d-block img-fluid" th:src="@{'/assets/image/FileTracking2.jpg'}" alt="Third slide">
+      <div class="carousel-caption d-none d-md-block">
+        <div class="banner-text">
+            <h2>File Digitilazation </h2>
+            <p></p>
+        </div>	
+    </div>
+  </div>
+            </div>	   
+		    
+		</div>
+	</div>
+			</div>
+			
+		
+	</div>
+	</section>
+
+
+
+<!--			<div class="row">-->
+
+
+
+
+
+
+
+
+<!--					<div class="col-md-12">-->
+
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-12">-->
+<!--                                <p class="text-center">&copy; Copyright 2018 - Company Name.  All rights reserved.</p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--&lt;!&ndash;            <div class="marquee">&ndash;&gt;-->
+<!--&lt;!&ndash;  <div class="marquee-content"> &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=01" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=02" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=03" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=04" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=05" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=06" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=07" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=08" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=01" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=02" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=03" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=04" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=05" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=06" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=07" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="marquee-item">&ndash;&gt;-->
+<!--&lt;!&ndash;      <img src="https://via.placeholder.com/600/000000/FFFFFF/?text=08" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--	</div>-->
+<!--			</div>-->
+
+
+
+
+	
+
+			<script type="text/javascript">
+			$(document).ready(function(){
+			    
+			    $('#myCarousel').carousel({
+			    interval: 3000,
+			 }) 
+			    
+			});
+			</script>
+</body>
+</html>
